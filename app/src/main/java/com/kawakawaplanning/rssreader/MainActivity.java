@@ -24,6 +24,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -45,18 +47,13 @@ public class MainActivity extends ActionBarActivity {
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString( "URLData",  "http://gigazine.net/news/rss_2.0/,http://feeds.gizmodo.jp/rss/gizmodo/index.xml,http://feeds.lifehacker.jp/rss/lifehacker/index.xml");
-        editor.putString( "TitleData",  "Gigazine,Gizmode,Lifehacker");
-        editor.commit();
+        if (sharedPref.getString("URLData", "notfound").equals("notfound")){
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString( "URLData",  "http://gigazine.net/news/rss_2.0/");
+            editor.putString( "TitleData",  "Gigazine");
+            editor.commit();
+        }
 
-//return MainFragment.newInstance("http://feeds.gizmodo.jp/rss/gizmodo/index.xml");
-//            case 2:
-//                return MainFragment.newInstance("http://feeds.lifehacker.jp/rss/lifehacker/index.xml");
-//            case 3:
-//                return MainFragment.newInstance("http://y-anz-m.blogspot.com/feeds/posts/default");
-//            case 4:
-//                return MainFragment.newInstance("http://kyoko-np.net/index.xml");
     }
 
 
@@ -90,41 +87,49 @@ public class MainActivity extends ActionBarActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                String name = nameEt.getEditableText().toString();
+                                final String name = nameEt.getEditableText().toString();
+
+                                String regex = "http://.*|https://.*";
+                                Pattern p = Pattern.compile(regex);
+                                Matcher m = p.matcher(name);
+
+
                                 if (!name.isEmpty()) {
+                                    if (m.find()) {
+                                        final Handler handler = new Handler();
+                                        new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                try {
 
-                                    final Handler handler = new Handler();
-                                    new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            try {
+                                                    URLConnection connection = new URL("https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&q=" + name + "&num=30").openConnection();
+                                                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+                                                    JSONObject json = new JSONObject(reader.readLine());
+                                                    String getTitle = json.getJSONObject("responseData").getJSONObject("feed").getString("title");
 
-                                                URLConnection connection = new URL("https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&q=" + nameEt.getEditableText().toString() + "&num=30").openConnection();
-                                                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-                                                JSONObject json = new JSONObject(reader.readLine());
-                                                String getTitle = json.getJSONObject("responseData").getJSONObject("feed").getString("title");
+                                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                                    editor.putString("URLData", sharedPref.getString("URLData", "1") + "," + name);
+                                                    editor.putString("TitleData", sharedPref.getString("TitleData", "1") + "," + getTitle);
+                                                    editor.commit();
+                                                    handler.post(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            vp = (ViewPager) findViewById(R.id.mypager);//定義
+                                                            adap = new PAdapter(fragmentManager);
+                                                            vp.setAdapter(adap);//アダプタ入れる
+                                                            return;
+                                                        }
+                                                    });
 
-                                                SharedPreferences.Editor editor = sharedPref.edit();
-                                                editor.putString( "URLData", sharedPref.getString("URLData", "1") + "," + nameEt.getEditableText().toString());
-                                                editor.putString("TitleData", sharedPref.getString("TitleData", "1") + "," + getTitle);
-                                                editor.commit();
-                                                handler.post(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        vp = (ViewPager)findViewById(R.id.mypager);//定義
-                                                        adap = new PAdapter(fragmentManager);
-                                                        vp.setAdapter(adap);//アダプタ入れる
-                                                        return;
-                                                    }
-                                                });
-
-                                            }catch (Exception e) {
+                                                } catch (Exception e) {
+                                                }
                                             }
-                                        }
-                                    }).start();
-
-
-
+                                        }).start();
+                                    } else {
+                                        Toast.makeText(context,"URLではありません。",Toast.LENGTH_SHORT).show();
+                                    }
+                                }else{
+                                    Toast.makeText(context,"文字が入力されていません。",Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

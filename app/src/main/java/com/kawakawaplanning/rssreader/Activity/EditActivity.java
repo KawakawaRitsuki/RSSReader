@@ -3,6 +3,7 @@ package com.kawakawaplanning.rssreader.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kawakawaplanning.rssreader.R;
 import com.kawakawaplanning.rssreader.TouchListView;
@@ -150,6 +150,8 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
         if (!name.isEmpty()) {//入力されているかどうかの判断
             if (m.find()) {//入力された文字列がURLの形式かどうかの判断
 
+                final Handler handler = new Handler();
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -158,12 +160,28 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
                             URLConnection connection = new URL("https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&q=" + name + "&num=30").openConnection();
                             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
                             JSONObject json = new JSONObject(reader.readLine());
-                            String getTitle = json.getJSONObject("responseData").getJSONObject("feed").getString("title");
-
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putString("URLData", sharedPref.getString("URLData", "1") + "," + name);
-                            editor.putString("TitleData", sharedPref.getString("TitleData", "1") + "," + getTitle);
-                            editor.commit();
+                            int response = json.getInt("responseStatus");
+                            System.out.println("ResponseCode:" + response);
+                            if(response == 200) {
+                                String getTitle = json.getJSONObject("responseData").getJSONObject("feed").getString("title");
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putString("URLData", sharedPref.getString("URLData", "1") + "," + name);
+                                editor.putString("TitleData", sharedPref.getString("TitleData", "1") + "," + getTitle);
+                                editor.commit();
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        et.setText("");
+                                    }
+                                });
+                            }else{
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        et.setError("RRSではない又は読み込めない形式です。");
+                                    }
+                                });
+                            }
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -171,10 +189,10 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
                     }
                 }).start();
             } else {
-                Toast.makeText(this, "URLではありません。", Toast.LENGTH_SHORT).show();
+                et.setError("URLを入力してください。");
             }
         }else{
-            Toast.makeText(this,"文字が入力されていません。",Toast.LENGTH_SHORT).show();
+            et.setError("文字を入力してください。");
         }
     }
 

@@ -46,7 +46,6 @@ public class WebActivity extends ActionBarActivity {
         webView.setWebViewClient(new ViewClient());
         webView.loadUrl(url);
 
-
         /*
 
         このURLにかけると、本文のみを返してくれる。

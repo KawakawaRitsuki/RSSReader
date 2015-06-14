@@ -1,7 +1,10 @@
 package com.kawakawaplanning.rssreader;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -50,8 +53,10 @@ public class MainFragment extends Fragment {
         adapter = new CustomAdapter(getActivity(),
                 R.layout.card_item);
 
-        GetNewsTask task = new GetNewsTask(searchUrl, adapter);
-        task.execute();
+        if (netWorkCheck(getActivity())) {
+            GetNewsTask task = new GetNewsTask(searchUrl, adapter);
+            task.execute();
+        }
 
         listView.setDivider(null);
         listView.setVerticalScrollBarEnabled(false);
@@ -70,5 +75,13 @@ public class MainFragment extends Fragment {
         listView.setAdapter(adapter);
     }
 
-
+    public static boolean netWorkCheck(Context context){
+        ConnectivityManager cm =  (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        if( info != null ){
+            return info.isConnected();
+        } else {
+            return false;
+        }
+    }
 }

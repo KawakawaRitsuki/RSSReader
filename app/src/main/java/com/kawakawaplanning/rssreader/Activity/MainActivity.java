@@ -1,8 +1,6 @@
 package com.kawakawaplanning.rssreader.Activity;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.kawakawaplanning.rssreader.PAdapter;
 import com.kawakawaplanning.rssreader.R;
@@ -80,37 +77,5 @@ public class MainActivity extends ActionBarActivity {
                 return true;
         }
         return false;
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        final Bundle bundle = data.getExtras();
-        Toast.makeText(this,bundle.getString("key.StringData"),Toast.LENGTH_SHORT).show();
-        if (resultCode != RESULT_CANCELED){
-
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("確認");
-            alertDialogBuilder.setMessage("このニュースフィードを追加しますか？");
-            alertDialogBuilder.setPositiveButton("はい",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            System.out.println(bundle.getString("key.StringData"));
-                        }
-                    });
-            alertDialogBuilder.setNegativeButton("いいえ",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-            // アラートダイアログのキャンセルが可能かどうかを設定します
-            alertDialogBuilder.setCancelable(true);
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            // アラートダイアログを表示します
-            alertDialog.show();
-        }else{
-            finish();
-        }
     }
 }

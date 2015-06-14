@@ -3,6 +3,7 @@
     package="com.kawakawaplanning.rssreader" >
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -17,6 +18,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity android:name=".Activity.WebActivity"></activity>
+        <activity android:name=".Activity.EditActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -42,8 +47,6 @@
                 <data android:pathPattern=".*\\.rss" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.WebActivity"></activity>
-        <activity android:name=".Activity.EditActivity"></activity>
     </application>
 
 </manifest>

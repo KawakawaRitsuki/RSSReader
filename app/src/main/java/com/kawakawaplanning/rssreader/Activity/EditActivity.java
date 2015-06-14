@@ -1,6 +1,7 @@
 package com.kawakawaplanning.rssreader.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,6 +65,14 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
         commitBtn.setOnClickListener(this);
 
         et = (EditText)findViewById(R.id.commitEt);
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+
+        if (Intent.ACTION_VIEW.equals(action)){
+            android.net.Uri uri = intent.getData();
+            et.setText(uri.toString());
+        }
     }
 
     private TouchListView.DropListener onDrop = new TouchListView.DropListener() {

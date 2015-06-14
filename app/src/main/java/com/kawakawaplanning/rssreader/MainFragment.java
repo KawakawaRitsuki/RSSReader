@@ -61,7 +61,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent=new Intent();
-                intent.setClassName("com.kawakawaplanning.rssreader","com.kawakawaplanning.rssreader.WebActivity");
+                intent.setClassName("com.kawakawaplanning.rssreader","com.kawakawaplanning.rssreader.Activity.WebActivity");
                 intent.putExtra("com.kawakawaplanning.rssreader.urlString", adapter.getItem(position).url);
                 startActivity(intent);
             }

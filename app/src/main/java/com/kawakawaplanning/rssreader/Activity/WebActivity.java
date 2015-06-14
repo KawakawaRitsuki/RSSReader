@@ -1,10 +1,12 @@
-package com.kawakawaplanning.rssreader;
+package com.kawakawaplanning.rssreader.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.kawakawaplanning.rssreader.R;
 
 /**
  * Created by KP on 15/05/04.
@@ -24,9 +26,6 @@ public class WebActivity extends ActionBarActivity {
         if(intent != null){
             url = intent.getStringExtra("com.kawakawaplanning.rssreader.urlString");
         }
-//        webView.getSettings().setTextSize(WebSettings.TextSize.SMALLEST);
-
-//        webView.getSettings().setTextZoom(150);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.setWebViewClient(new WebViewClient() {
@@ -36,6 +35,14 @@ public class WebActivity extends ActionBarActivity {
             }
         });
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl(/*"http://boilerpipe-web.appspot.com/extract?url=" + */ url /* + "&extractor=ArticleExtractor&output=htmlFragment"*/);
+        webView.loadUrl(url);
+        /*
+
+        このURLにかけると、本文のみを返してくれる。
+        高速モードには向くかも。。。？
+
+        - http://boilerpipe-web.appspot.com/extract?url=" + url + "&extractor=ArticleExtractor&output=htmlFragment"
+
+        */
     }
 }

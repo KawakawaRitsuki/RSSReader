@@ -10,6 +10,15 @@ public class Item {
     public CharSequence text;
     public String url;
 
+
+    /*
+
+    - title -> 項目のタイトル
+    - text  -> 項目の説明
+    - url   -> 項目選択時のURL
+
+     */
+
     public Item(String title, CharSequence text, String url) {
         super();
 

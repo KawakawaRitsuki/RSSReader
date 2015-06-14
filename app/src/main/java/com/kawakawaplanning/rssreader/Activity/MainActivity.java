@@ -1,8 +1,11 @@
 package com.kawakawaplanning.rssreader.Activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
@@ -65,6 +68,16 @@ public class MainActivity extends ActionBarActivity {
         vp = (ViewPager)findViewById(R.id.mypager);//定義
         adap = new PAdapter(this.getSupportFragmentManager());
         vp.setAdapter(adap);//アダプタ入れる
+
+        if(!netWorkCheck(this)){
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            alertDialogBuilder.setTitle("ネットワークエラー");
+            alertDialogBuilder.setMessage("ネットワークエラーが発生しました。インターネットの接続状態を確認して、再読み込み（上から下にスライド）してください。");
+            alertDialogBuilder.setPositiveButton("OK", null);
+            alertDialogBuilder.setCancelable(true);
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
@@ -82,5 +95,14 @@ public class MainActivity extends ActionBarActivity {
                 return true;
         }
         return false;
+    }
+    public static boolean netWorkCheck(Context context){
+        ConnectivityManager cm =  (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        if( info != null ){
+            return info.isConnected();
+        } else {
+            return false;
+        }
     }
 }

@@ -1,8 +1,11 @@
 package com.kawakawaplanning.rssreader.Activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -59,5 +62,20 @@ public class WebActivity extends ActionBarActivity {
             //ロード完了時にやりたい事を書く
             progressBar.setVisibility(View.INVISIBLE);
         }
+    }
+    public boolean onCreateOptionsMenu(Menu menu){
+        menu.add(0, 0, 0, "ブラウザで開く");
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 0:
+                Uri uri = Uri.parse(url);
+                Intent i = new Intent(Intent.ACTION_VIEW,uri);
+                startActivity(i);
+                return true;
+        }
+        return false;
     }
 }

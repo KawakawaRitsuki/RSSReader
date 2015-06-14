@@ -65,6 +65,7 @@ public class WebActivity extends ActionBarActivity {
     }
     public boolean onCreateOptionsMenu(Menu menu){
         menu.add(0, 0, 0, "ブラウザで開く");
+        menu.add(0, 1, 0, "共有...");
         return true;
     }
 
@@ -75,6 +76,13 @@ public class WebActivity extends ActionBarActivity {
                 Intent i = new Intent(Intent.ACTION_VIEW,uri);
                 startActivity(i);
                 return true;
+            case 1:
+                String shareBody = webView.getTitle() + "\n" + url + "\n\n RSSReader -KawakawaPlanning-";
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                sharingIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sharingIntent, "シェア"));
+                break;
         }
         return false;
     }

@@ -52,8 +52,6 @@ public class GetNewsTask extends AsyncTask {
     }
 
         return get;
-
-
     }
     @Override
     protected void onPostExecute(Object o) {

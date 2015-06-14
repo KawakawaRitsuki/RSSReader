@@ -19,6 +19,7 @@ public class PAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        System.out.println(position + "," + sharedPref.getString("URLData", "").split(",")[position]);
         return MainFragment.newInstance(sharedPref.getString("URLData", "").split(",")[position]);
     }
 

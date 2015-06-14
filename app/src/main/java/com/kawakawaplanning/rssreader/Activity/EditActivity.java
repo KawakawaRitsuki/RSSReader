@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,7 +145,7 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.commitBtn:
                 commit();
-                setList();
+
                 break;
         }
     }
@@ -195,6 +196,13 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                setList();
+                            }
+                        });
+
                     }
                 }).start();
             } else {
@@ -204,7 +212,20 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
             et.setError("文字を入力してください。");
         }
     }
-
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction()==KeyEvent.ACTION_DOWN) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_BACK:
+                    Intent intent=new Intent();
+                    intent.setClassName("com.kawakawaplanning.rssreader","com.kawakawaplanning.rssreader.Activity.MainActivity");
+                    startActivity(intent);
+                    finish();
+                    return true;
+            }
+        }
+        return super.dispatchKeyEvent(event);
+    }
     public void setList(){
         array=new ArrayList<String>(Arrays.asList(TitleData));
         urlArray = new ArrayList<String>(Arrays.asList(URLData));

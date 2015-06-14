@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,5 +85,19 @@ public class WebActivity extends ActionBarActivity {
                 break;
         }
         return false;
+    }
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction()==KeyEvent.ACTION_DOWN) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_BACK:
+                    Intent intent=new Intent();
+                    intent.setClassName("com.kawakawaplanning.rssreader","com.kawakawaplanning.rssreader.Activity.MainActivity");
+                    startActivity(intent);
+                    finish();
+                    return true;
+            }
+        }
+        return super.dispatchKeyEvent(event);
     }
 }

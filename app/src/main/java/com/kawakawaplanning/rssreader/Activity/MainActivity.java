@@ -58,6 +58,10 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        System.out.println("resume");
+        vp = null;
+        adap = null;
+
         vp = (ViewPager)findViewById(R.id.mypager);//定義
         adap = new PAdapter(this.getSupportFragmentManager());
         vp.setAdapter(adap);//アダプタ入れる
@@ -74,6 +78,7 @@ public class MainActivity extends ActionBarActivity {
                 Intent intent=new Intent();
                 intent.setClassName("com.kawakawaplanning.rssreader","com.kawakawaplanning.rssreader.Activity.EditActivity");
                 startActivity(intent);
+                finish();
                 return true;
         }
         return false;

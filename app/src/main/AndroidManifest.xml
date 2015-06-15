@@ -22,6 +22,7 @@
 
         </activity>
         <activity android:name=".Activity.WebActivity"></activity>
+        <activity android:name=".Activity.OpenSourceLicenseActivity"></activity>
         <activity android:name=".Activity.EditActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

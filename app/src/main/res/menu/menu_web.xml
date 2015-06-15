@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto">
+    <item android:icon="@drawable/ic_open_in_browser_white_48dp" android:id="@+id/menuitem2" android:title="ブラウザで開く" auto:showAsAction="always" />
+    <item android:icon="@drawable/ic_share_white_48dp" android:id="@+id/menuitem3" android:title="共有..." auto:showAsAction="always" />
+</menu>

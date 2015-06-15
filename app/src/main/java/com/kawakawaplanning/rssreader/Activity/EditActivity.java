@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
@@ -42,6 +43,7 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
     private ArrayList<String> array;
     private IconicAdapter adapter=null;
     private ArrayList<String> urlArray;
+    private Vibrator vibrator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,12 +54,18 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
 
         context = this;
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
-        TitleData = sharedPref.getString("TitleData", "").split(",");
-        URLData = sharedPref.getString("URLData", "").split(",");
+
         lv = (TouchListView)findViewById(R.id.list);
         lv.setDropListener(onDrop);
         lv.setRemoveListener(onRemove);
+        lv.setDragListener(new TouchListView.DragListener() {
+            @Override
+            public void drag(int from, int to) {
+                vibrator.vibrate(50);
+            }
+        });
 
         setList();
 
@@ -75,6 +83,7 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
             et.setText(uri.toString());
         }
     }
+
 
     private TouchListView.DropListener onDrop = new TouchListView.DropListener() {
         @Override
@@ -114,6 +123,7 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
     private TouchListView.RemoveListener onRemove = new TouchListView.RemoveListener() {
         @Override
         public void remove(int which) {
+            vibrator.vibrate(50);
             adapter.remove(adapter.getItem(which));
             urlArray.remove(which);
 
@@ -142,6 +152,7 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        vibrator.vibrate(50);
         switch (v.getId()){
             case R.id.commitBtn:
                 commit();
@@ -188,7 +199,7 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        et.setError("RRSではない又は読み込めない形式です。");
+                                        et.setError("RRSではない、又は読み込めない形式です。");
                                     }
                                 });
                             }
@@ -227,6 +238,8 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
         return super.dispatchKeyEvent(event);
     }
     public void setList(){
+        TitleData = sharedPref.getString("TitleData", "").split(",");
+        URLData = sharedPref.getString("URLData", "").split(",");
         array=new ArrayList<String>(Arrays.asList(TitleData));
         urlArray = new ArrayList<String>(Arrays.asList(URLData));
         adapter=new IconicAdapter();

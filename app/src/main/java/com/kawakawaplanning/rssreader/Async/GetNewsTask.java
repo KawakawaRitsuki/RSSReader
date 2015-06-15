@@ -65,6 +65,8 @@ public class GetNewsTask extends AsyncTask {
             i++;
         }catch (JSONException e){
             e.printStackTrace();
+        }catch (NullPointerException e){
+            
         }
         adapter.clear();
 

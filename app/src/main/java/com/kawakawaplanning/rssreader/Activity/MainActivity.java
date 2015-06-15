@@ -1,6 +1,7 @@
 package com.kawakawaplanning.rssreader.Activity;
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.kawakawaplanning.rssreader.PAdapter;
 import com.kawakawaplanning.rssreader.R;
@@ -48,11 +50,9 @@ public class MainActivity extends ActionBarActivity {
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (sharedPref.getString("URLData", "notfound").equals("notfound")){
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString( "URLData",  "http://gigazine.net/news/rss_2.0/");
-            editor.putString( "TitleData",  "Gigazine");
-            editor.commit();
+        if (!sharedPref.getString("URLData", "notfound").equals("notfound")){
+            findViewById(R.id.imageView).setVisibility(View.INVISIBLE);
+            findViewById(R.id.relative).setVisibility(View.INVISIBLE);
         }
 
     }
@@ -104,5 +104,11 @@ public class MainActivity extends ActionBarActivity {
         } else {
             return false;
         }
+    }
+    public void browser(View v){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_WEB_SEARCH);
+        intent.putExtra(SearchManager.QUERY, "RSS おすすめ");
+        startActivity(intent);
     }
 }

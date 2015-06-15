@@ -1,23 +1,118 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context=".MainActivity">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/mypager"
-        android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="1">
+        android:layout_height="match_parent" >
 
-        <android.support.v4.view.PagerTabStrip
-            android:id="@+id/pagertabstrip"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/mypager"
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:layout_weight="1">
+
+            <android.support.v4.view.PagerTabStrip
+                android:id="@+id/pagertabstrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:background="#154c58"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="#ffffff" />
+
+        </android.support.v4.view.ViewPager>
+
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView"
+        android:background="#aa000000" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/relative">
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="#154c58"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="はじめまして！"
+            android:id="@+id/textView2"
+            android:textColor="#ffffff"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/space"
+            android:layout_toEndOf="@+id/space" />
+
+        <Space
+            android:layout_width="@android:dimen/app_icon_size"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/space" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="まずは、RSSのサイトを登録しましょう！\nこのまま、ブラウザを起動してRSSボタンを選択するか、URLを直接入力しましょう。"
+            android:id="@+id/textView"
+            android:layout_marginTop="35dp"
+            android:layout_below="@+id/textView2"
+            android:layout_toRightOf="@+id/space"
+            android:textColor="#ffffff"
+            android:layout_toLeftOf="@+id/space2"
+            android:layout_toStartOf="@+id/space2" />
+
+        <Space
+            android:layout_width="@android:dimen/app_icon_size"
+            android:layout_height="match_parent"
+            android:id="@+id/space2"
+            android:layout_gravity="right|center_vertical"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageView
+            android:layout_width="@dimen/title_height"
+            android:layout_height="58dp"
+            android:id="@+id/imageView2"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ue"
+            android:scaleType="fitStart" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="URLを入力する。"
+            android:id="@+id/textView3"
+            android:layout_below="@+id/imageView2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:textColor="#ffffff" />
 
-    </android.support.v4.view.ViewPager>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ブラウザを起動する"
+            android:id="@+id/button"
+            android:layout_marginTop="34dp"
+            android:layout_below="@+id/textView"
+            android:layout_alignRight="@+id/textView"
+            android:layout_alignEnd="@+id/textView"
+            android:onClick="browser" />
+    </RelativeLayout>
 
-</LinearLayout>
+</FrameLayout>

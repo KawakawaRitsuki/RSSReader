@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kawakawaplanning.rssreader.R;
 import com.kawakawaplanning.rssreader.TouchListView;
@@ -41,7 +42,7 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
     public EditText et;
     public static Context context;
     private ArrayList<String> array;
-    private IconicAdapter adapter=null;
+    private IconicAdapter adapter;
     private ArrayList<String> urlArray;
     private Vibrator vibrator;
 
@@ -77,7 +78,6 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
 
         Intent intent = getIntent();
         String action = intent.getAction();
-
         if (Intent.ACTION_VIEW.equals(action)){
             android.net.Uri uri = intent.getData();
             et.setText(uri.toString());
@@ -123,30 +123,35 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
     private TouchListView.RemoveListener onRemove = new TouchListView.RemoveListener() {
         @Override
         public void remove(int which) {
-            vibrator.vibrate(50);
-            adapter.remove(adapter.getItem(which));
-            urlArray.remove(which);
+            if(adapter.getCount() == 1){
+                vibrator.vibrate(100);
+                Toast.makeText(getApplicationContext(),"RSS登録を空にはできません。\n何かを登録してから消してください。",Toast.LENGTH_SHORT).show();
+            }else {
+                vibrator.vibrate(50);
+                adapter.remove(adapter.getItem(which));
+                urlArray.remove(which);
 
-            StringBuffer sb = new StringBuffer();
-            StringBuffer sb2 = new StringBuffer();
+                StringBuffer sb = new StringBuffer();
+                StringBuffer sb2 = new StringBuffer();
 
-            for(int i = 0 ;i < adapter.getCount();i++){
-                if(i == 0){
-                    sb.append(adapter.getItem(i));
-                    sb2.append(urlArray.get(i));
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    if (i == 0) {
+                        sb.append(adapter.getItem(i));
+                        sb2.append(urlArray.get(i));
 
-                }else{
-                    sb.append("," + adapter.getItem(i));
-                    sb2.append("," + urlArray.get(i));
+                    } else {
+                        sb.append("," + adapter.getItem(i));
+                        sb2.append("," + urlArray.get(i));
+                    }
                 }
-            }
-            System.out.println(sb.toString());
-            System.out.println(sb2.toString());
+                System.out.println(sb.toString());
+                System.out.println(sb2.toString());
 
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString( "URLData",  sb2.toString());
-            editor.putString("TitleData", sb.toString());
-            editor.commit();
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("URLData", sb2.toString());
+                editor.putString("TitleData", sb.toString());
+                editor.commit();
+            }
         }
     };
 
@@ -186,8 +191,13 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
                             if(response == 200) {
                                 String getTitle = json.getJSONObject("responseData").getJSONObject("feed").getString("title");
                                 SharedPreferences.Editor editor = sharedPref.edit();
-                                editor.putString("URLData", sharedPref.getString("URLData", "1") + "," + name);
-                                editor.putString("TitleData", sharedPref.getString("TitleData", "1") + "," + getTitle);
+                                if(sharedPref.getString("URLData", "notFound").equals("notFound")){
+                                    editor.putString("URLData", name);
+                                    editor.putString("TitleData", getTitle);
+                                }else{
+                                    editor.putString("URLData", sharedPref.getString("URLData", "") + "," + name);
+                                    editor.putString("TitleData", sharedPref.getString("TitleData", "") + "," + getTitle);
+                                }
                                 editor.commit();
                                 handler.post(new Runnable() {
                                     @Override
@@ -199,7 +209,7 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        et.setError("RRSではない、又は読み込めない形式です。");
+                                        et.setError("RSSではない、又は読み込めない形式です。");
                                     }
                                 });
                             }
@@ -238,12 +248,14 @@ public class EditActivity extends ActionBarActivity implements View.OnClickListe
         return super.dispatchKeyEvent(event);
     }
     public void setList(){
-        TitleData = sharedPref.getString("TitleData", "").split(",");
-        URLData = sharedPref.getString("URLData", "").split(",");
-        array=new ArrayList<String>(Arrays.asList(TitleData));
-        urlArray = new ArrayList<String>(Arrays.asList(URLData));
-        adapter=new IconicAdapter();
-        lv.setAdapter(adapter);
+        TitleData = sharedPref.getString("TitleData", "登録ボタンを押して登録しましょう！").split(",");
+        URLData = sharedPref.getString("URLData", "登録ボタンを押して登録しましょう！").split(",");
+        if(!TitleData.equals("登録ボタンを押して登録しましょう！")) {
+            array = new ArrayList<String>(Arrays.asList(TitleData));
+            urlArray = new ArrayList<String>(Arrays.asList(URLData));
+            adapter = new IconicAdapter();
+            lv.setAdapter(adapter);
+        }
     }
     class IconicAdapter extends ArrayAdapter<String> {
         IconicAdapter() {

@@ -31,7 +31,7 @@
             android:text="登録"
             android:id="@+id/commitBtn" />
     </LinearLayout>
-    <com.kawakawaplanning.rssreader.TouchListView
+    <com.kawakawaplanning.rssreader.Edit.TouchListView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tlv="http://schemas.android.com/apk/res/com.kawakawaplanning.rssreader"
         android:id="@+id/list"

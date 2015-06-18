@@ -58,7 +58,8 @@ ___
  - FastWebFragment ------- 本文抽出のエンジンを利用した高速モード用Fragment
  - PAdapter -------------------- ViewPager用Adapter
  - GetFastDataTask --------- 高速モード用取得用AsyncTask
-
+- Other
+ - OpenSourceLicenseActivity - オープンソースライセンス表示用アクティビティ
 ##ライセンス
 ___
 RSSReader

@@ -24,7 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.kawakawaplanning.rssreader.Ather.OpenSourceLicenseActivity;
+import com.kawakawaplanning.rssreader.Other.OpenSourceLicenseActivity;
 import com.kawakawaplanning.rssreader.R;
 
 import java.util.HashMap;

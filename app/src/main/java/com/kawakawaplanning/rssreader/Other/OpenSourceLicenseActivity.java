@@ -1,4 +1,4 @@
-package com.kawakawaplanning.rssreader.Ather;
+package com.kawakawaplanning.rssreader.Other;
 
 import android.app.Activity;
 import android.os.Bundle;

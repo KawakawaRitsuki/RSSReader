@@ -57,7 +57,7 @@ public class  WebActivity extends ActionBarActivity {
                 startActivity(i);
                 return true;
             case R.id.menuitem3:
-                String shareBody = NormalWebFragment.getTitle() + "\n" + url + "\n\n RSSReader -KawakawaPlanning-";
+                String shareBody = NormalWebFragment.getTitle() + "\n" + url + "\n\n #KP_RSSReader";
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 sharingIntent.setType("text/plain");

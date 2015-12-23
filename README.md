@@ -64,6 +64,7 @@ ___
 ___
 RSSReader
 
-Copyright 2015 KawakawaPlanning All rights reserved.\nReleased under the [MIT license]
+Copyright 2015 KawakawaPlanning All rights reserved.
+Released under the [MIT license]
 
 [MIT license]: https://gist.github.com/KawakawaRitsuki/2ce3412a30c2d15ab49c

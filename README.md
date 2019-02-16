@@ -63,7 +63,7 @@ ___
 
 ## ライセンス
 ___
-###RSSReader
+### RSSReader
 
 Copyright 2015 KawakawaPlanning All rights reserved.    
 Released under the [MIT license]
